@@ -1,3 +1,12 @@
+'''
+@author neelkant newra
+date: 29.03.2022
+
+Program to execute image segmentation
+
+'''
+
+
 import os
 from os import mkdir
 
@@ -22,13 +31,16 @@ from tensorflow.keras.optimizers import Adam
 
 def SegmentImage(model,path,img_shape = (512,512),threshold = 0.5):
     '''
-    **********Input**************
-    model: segmentation model (h5)
-    path: filepath to image (string)
-    img_shape: shape of the image(IMG_WIDTH,IMG_HEIGHT) used in segmenation model
-    threshold: float value varing between 0 and 1, thresholding the mask
-    *********Output*************
-    return: Segment mask, segmented image, original image
+    Parameters
+    ----------
+    model : Segmented model(h5)
+    path(string) : file path to image
+    img_shape(tuple): shape of the image(IMG_WIDTH,IMG_HEIGHT) used in segmenation model
+    threshold : float value varing between 0 and 1, thresholding the mask
+    
+    Return
+    ------
+    Segmented mask , segmented image, original image
     '''
     IMG_WIDTH,IMG_HEIGHT = img_shape
     ori_x = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
@@ -47,29 +59,19 @@ def SegmentImage(model,path,img_shape = (512,512),threshold = 0.5):
     return maskapply,masked_image,chest_image
 
 
-def KMeanSegment(img_path,filename,K=2,attempt=4):
+def KMeanSegment(img_path:str,filename:str,K=2,attempt=4)->str:
     '''
-    _____________________________________________
-    |                   Input                   |
-    |--------------------------------------------
-    |   img_path    | path of the image to      |
-    |               | be segmented              |
-    |--------------------------------------------
-    |  filename     | folder name to save       |
-    |               | all file                  |
-    |--------------------------------------------
-    |     K         | number of region K-Mean   |
-    |               | (default_value=2)         |
-    |--------------------------------------------
-    |    attempt    | number of attempt         |
-    |               | (default_value=4)         |
-    ---------------------------------------------
+    Parameter
+    ---------
+    img_path : path of the image to be segmented
+    filename : folder name to save alll file
+    K : number of region K-mean (default value = 2)
+    attempt: number of attempt you want to carry on (default value = 4)
     
-    _____________________________________________
-    |                   Output                  |
-    ---------------------------------------------
-    |       return string with file name        |
-    ---------------------------------------------
+    Return
+    ------
+    String with file name in which all data saved,
+    Folder consisting of mask, segment region, original image, complete segmented image
     '''
     img = cv2.imread(img_path)
     resize_image = img.reshape((-1,3))
